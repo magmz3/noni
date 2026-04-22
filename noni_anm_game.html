@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>🎮 لعبة خمن الصوت | حيوانات المزرعة 🐣</title>
+    <!-- خطوط عربية مرحة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&family=El+Messiri:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fbf5e8 0%, #f9efd1 100%);
+            min-height: 100vh;
+            font-family: 'Baloo Bhaijaan 2', 'El Messiri', cursive, sans-serif;
+            padding: 20px 16px 40px;
+            color: #3b2b1f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* رأس اللعبة */
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #5e3e1c;
+            text-shadow: 4px 4px 0 #f3d59b;
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 251, 235, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 80px;
+            box-shadow: 0 12px 0 #bfa27b, 0 8px 20px rgba(0,0,0,0.1);
+            border: 3px solid #fff3d1;
+            margin-bottom: 20px;
+        }
+
+        .game-header p {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d5e3c;
+            background: #e3f0da;
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            box-shadow: inset 0 2px 5px rgba(90,60,30,0.08), 0 6px 0 #6f9e7c;
+            border: 2px solid #fef9e3;
+        }
+
+        /* لوحة النقاط والأزرار */
+        .game-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: rgba(245, 225, 180, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 15px 25px;
+            border-radius: 60px;
+            border: 3px solid #eebb77;
+            box-shadow: 0 8px 0 #a58357;
+        }
+
+        .score-box {
+            background: #4a2e15;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: #ffefc0;
+            font-size: 2.2rem;
+            font-weight: bold;
+            box-shadow: inset 0 3px 6px #2e1d0c, 0 6px 0 #2b1c0e;
+            border: 2px solid #efc48c;
+        }
+
+        .score-box i {
+            color: gold;
+            margin-left: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #7a5a2e, 0 3px 10px rgba(0,0,0,0.1);
+            border: 3px solid #ffe3a3;
+            transition: all 0.07s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #2c1c0c;
+        }
+
+        .btn-primary {
+            background: #ffb347;
+        }
+
+        .btn-secondary {
+            background: #a7c5a1;
+            box-shadow: 0 6px 0 #5e7a58;
+            border-color: #d4edc9;
+        }
+
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 1px 0 #7a5a2e, 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        /* منطقة اللعب الرئيسية */
+        .play-area {
+            background: rgba(255, 245, 215, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 70px 70px 40px 40px;
+            padding: 30px 25px 40px;
+            border: 4px solid #ffdd9e;
+            box-shadow: 0 18px 0 #a58357, 0 15px 25px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .sound-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .big-sound-btn {
+            background: #4caf50;
+            border: none;
+            border-radius: 100px;
+            padding: 25px 50px;
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 3px 3px 0 #1f4f1f;
+            box-shadow: 0 15px 0 #2e6b2e, 0 8px 20px rgba(0,0,0,0.2);
+            border: 5px solid #b0e57c;
+            cursor: pointer;
+            transition: 0.08s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .big-sound-btn i {
+            font-size: 3rem;
+        }
+
+        .big-sound-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 7px 0 #2e6b2e, 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .big-sound-btn.playing-effect {
+            background: #2e7d32;
+            transform: translateY(5px);
+            box-shadow: 0 10px 0 #1e5620;
+        }
+
+        /* شبكة الخيارات */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .option-card {
+            background: #fef7e9;
+            border-radius: 35px;
+            padding: 15px;
+            box-shadow: 0 12px 0 #b2916e, 0 5px 15px rgba(0,0,0,0.15);
+            border: 4px solid #ffe3a3;
+            cursor: pointer;
+            transition: 0.1s;
+            text-align: center;
+        }
+
+        .option-card:active {
+            transform: translateY(6px);
+            box-shadow: 0 6px 0 #b2916e;
+        }
+
+        .option-card.correct-highlight {
+            box-shadow: 0 0 0 8px #6fda6f, 0 10px 0 #3e8e3e;
+            background: #e6ffe6;
+            transform: scale(1.02);
+        }
+
+        .option-card.wrong-highlight {
+            box-shadow: 0 0 0 8px #f9a29f, 0 10px 0 #b1524a;
+            background: #ffe0e0;
+        }
+
+        .option-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 25px;
+            border: 4px solid #dbb47a;
+            background: #cfb595;
+            pointer-events: none;  /* حتى لا تتداخل مع النقر على البطاقة */
+        }
+
+        /* رسالة التفاعل */
+        .feedback-box {
+            min-height: 90px;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: #fcf0d9;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 3px 8px #bba88c, 0 5px 0 #b2916e;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #3b2a12;
+            border: 2px solid #ffd58c;
+            text-align: center;
+        }
+
+        /* تذييل */
+        .game-footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.3rem;
+            color: #5f4a2e;
+            background: rgba(255,245,215,0.7);
+            padding: 18px 25px;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            border: 2px dashed #b6956a;
+        }
+
+        /* استجابة للجوال */
+        @media (max-width: 700px) {
+            .game-header h1 {
+                font-size: 2.5rem;
+                padding: 12px 20px;
+            }
+            .game-header p {
+                font-size: 1.4rem;
+            }
+            .game-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .big-sound-btn {
+                font-size: 2rem;
+                padding: 20px 30px;
+            }
+            .feedback-box {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options-grid {
+                gap: 12px;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 1.2rem;
+            }
+        }
+
+        .credit-line {
+            direction: ltr;
+            display: inline-block;
+            background: #e9dbc4;
+            padding: 5px 15px;
+            border-radius: 30px;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <header class="game-header">
+        <h1>
+            <i class="fas fa-headphones"></i>
+            خمن صوت الحيوان
+            <i class="fas fa-paw"></i>
+        </h1>
+        <p>
+            <i class="fas fa-volume-up"></i>
+            استمع جيداً واختر الصورة الصحيحة
+            <i class="fas fa-smile-wink"></i>
+        </p>
+    </header>
+
+    <!-- لوحة التحكم -->
+    <div class="game-controls">
+        <div class="score-box">
+            <i class="fas fa-star"></i>
+            النقاط: <span id="scoreDisplay">0</span>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-secondary" id="newRoundBtn">
+                <i class="fas fa-sync-alt"></i> جولة جديدة
+            </button>
+            <button class="btn btn-primary" id="resetGameBtn">
+                <i class="fas fa-redo-alt"></i> لعبة جديدة
+            </button>
+        </div>
+    </div>
+
+    <!-- منطقة اللعب -->
+    <div class="play-area">
+        <div class="sound-area">
+            <button class="big-sound-btn" id="playSoundBtn">
+                <i class="fas fa-play-circle"></i>
+                اسمع الصوت
+                <i class="fas fa-music"></i>
+            </button>
+        </div>
+
+        <!-- شبكة صور الحيوانات (الخيارات) -->
+        <div class="options-grid" id="optionsContainer">
+            <!-- تُملأ ديناميكياً -->
+        </div>
+
+        <!-- رسالة النتيجة والتشجيع -->
+        <div class="feedback-box" id="feedbackMsg">
+            🎵 اضغط "اسمع الصوت" وابدأ التخمين 🎵
+        </div>
+    </div>
+
+    <footer class="game-footer">
+        <div>
+            <i class="fas fa-heart" style="color: #c44f4f;"></i>
+            تعلم أصوات الحيوانات واستمتع بالتحدي
+            <i class="fas fa-heart" style="color: #c44f4f;"></i>
+        </div>
+        <div class="credit-line">
+            <i class="fas fa-camera"></i> صور واقعية · أصوات حقيقية
+        </div>
+    </footer>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ---------- مكتبة الحيوانات (نفس البيانات مع روابط الصور والأصوات) ----------
+        const animals = [
+            { nameAr: "البقرة",
+                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjMpBFzeiH7TtvHbYdnKBLxtS6amdRXcdw0w&s?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp4.shabakngy.com/m/m/2vaGSayG4es.mp3",
+                icon: "🐄"
+                },
+            { nameAr: "الخروف", imageUrl: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/V5JV3vWvQzA.mp3", icon: "🐑" },
+            { nameAr: "الدجاجة", imageUrl: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/NZ0zE1pB_og.mp3", icon: "🐔" },
+            { nameAr: "الحصان", imageUrl: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/G2x7HRCc3JU.mp3", icon: "🐎" },
+            { nameAr: "ارنب", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Oryctolagus_cuniculus_Tasmania_2.jpg/960px-Oryctolagus_cuniculus_Tasmania_2.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/ifqXhfTNvpg.mp3", icon: "🐇" },
+            { nameAr: "البطة", imageUrl: "https://png.pngtree.com/png-vector/20231115/ourmid/pngtree-female-duck-duck-brown-png-image_10588001.png?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/6gXfRJEYh20.mp3", icon: "🦆" },
+            { nameAr: "الحمار", imageUrl: "https://img.youm7.com/large/S7200830154145.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/RIYS3KWtbTs.mp3", icon: "🫏" },
+            { nameAr: "كلب", imageUrl: "https://www.purina-arabia.com/sites/default/files/2025-09/BREED%2520Hero%2520Mobile_0154_boxer%20%281%29.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/G-g2cmDBiIU.mp3", icon: "🐕" }
+        ];
+
+        // ---------- عناصر DOM ----------
+        const scoreSpan = document.getElementById('scoreDisplay');
+        const optionsDiv = document.getElementById('optionsContainer');
+        const feedbackEl = document.getElementById('feedbackMsg');
+        const playSoundBtn = document.getElementById('playSoundBtn');
+        const newRoundBtn = document.getElementById('newRoundBtn');
+        const resetGameBtn = document.getElementById('resetGameBtn');
+
+        // ---------- متغيرات الحالة ----------
+        let score = 0;
+        let currentCorrectAnimal = null;       // الحيوان الصحيح للجولة الحالية
+        let currentOptions = [];                // خيارات الجولة (4 عناصر)
+        let canSelect = true;                  // هل مسموح بالاختيار الآن؟
+        let gameAudio = null;                  // عنصر الصوت الحالي للعبة
+
+        // ---------- دوال مساعدة ----------
+
+        // تحديث عرض النقاط
+        function updateScoreUI() {
+            scoreSpan.textContent = score;
+        }
+
+        // إيقاف أي صوت لعبة سابق
+        function stopGameAudio() {
+            if (gameAudio) {
+                gameAudio.pause();
+                gameAudio.currentTime = 0;
+                gameAudio = null;
+            }
+        }
+
+        // إزالة كل تأثيرات التمييز من الخيارات
+        function clearHighlights() {
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('correct-highlight', 'wrong-highlight');
+            });
+        }
+
+        // إنشاء 4 خيارات عشوائية (واحد منها هو الصحيح)
+        function generateOptions(correctAnimal) {
+            // نسخ المصفوفة واستبعاد الحيوان الصحيح مؤقتاً للاختيار العشوائي
+            const otherAnimals = animals.filter(a => a.nameAr !== correctAnimal.nameAr);
+            // خلط الحيوانات الأخرى
+            const shuffledOthers = [...otherAnimals].sort(() => Math.random() - 0.5);
+            // نأخذ أول 3 حيوانات مختلفة
+            const selectedOthers = shuffledOthers.slice(0, 3);
+            
+            // نضيف الحيوان الصحيح
+            let options = [correctAnimal, ...selectedOthers];
+            // خلط الخيارات
+            options = options.sort(() => Math.random() - 0.5);
+            return options;
+        }
+
+        // عرض الخيارات في الواجهة
+        function renderOptions(options, correctAnimal) {
+            optionsDiv.innerHTML = '';
+            options.forEach(animal => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.innerHTML = `<img class="option-img" src="${animal.imageUrl}" alt="${animal.nameAr}" loading="lazy">`;
+                
+                // إضافة مستمع للنقر
+                card.addEventListener('click', (e) => {
+                    if (!canSelect) {
+                        feedbackEl.innerHTML = '⏳ لقد أجبت! اضغط "جولة جديدة" أو "اسمع الصوت" للمتابعة ⏳';
+                        return;
+                    }
+                    
+                    const isCorrect = (animal.nameAr === correctAnimal.nameAr);
+                    
+                    // إيقاف أي صوت سابق عند الاختيار (اختياري)
+                    // stopGameAudio(); // نترك الصوت يعمل حتى لو اختار (لكن الأفضل إيقافه)
+                    
+                    if (isCorrect) {
+                        // إجابة صحيحة
+                        clearHighlights();
+                        card.classList.add('correct-highlight');
+                        feedbackEl.innerHTML = `🎉 ممتاز! هذا صوت ${animal.nameAr} ${animal.icon || ''} 🎉 +1 نقطة`;
+                        score++;
+                        updateScoreUI();
+                        canSelect = false;   // منع اختيار آخر
+                        
+                        // إزالة التأثير بعد فترة قصيرة
+                        setTimeout(() => {
+                            card.classList.remove('correct-highlight');
+                        }, 1000);
+                    } else {
+                        // إجابة خاطئة
+                        clearHighlights();
+                        card.classList.add('wrong-highlight');
+                        feedbackEl.innerHTML = `😅 ليس ${animal.nameAr} ... حاول مرة أخرى! استمع للصوت مجدداً 🔊`;
+                        
+                        setTimeout(() => {
+                            card.classList.remove('wrong-highlight');
+                        }, 700);
+                        // يمكنه المحاولة مرة أخرى (canSelect تبقى true)
+                    }
+                });
+                
+                optionsDiv.appendChild(card);
+            });
+        }
+
+        // بدء جولة جديدة (توليد حيوان صحيح عشوائي، خيارات جديدة، إعادة تعيين حالة الاختيار)
+        function startNewRound() {
+            stopGameAudio();
+            clearHighlights();
+            
+            // اختيار حيوان عشوائي ليكون الصحيح
+            const randomIndex = Math.floor(Math.random() * animals.length);
+            currentCorrectAnimal = animals[randomIndex];
+            
+            // توليد الخيارات
+            currentOptions = generateOptions(currentCorrectAnimal);
+            renderOptions(currentOptions, currentCorrectAnimal);
+            
+            // السماح بالاختيار
+            canSelect = true;
+            
+            // تحديث رسالة الترحيب
+            feedbackEl.innerHTML = '🎵 اضغط "اسمع الصوت" لتسمع صوت الحيوان 🎵';
+            
+            // إزالة أي تأثير من زر الصوت
+            playSoundBtn.classList.remove('playing-effect');
+        }
+
+        // تشغيل صوت الحيوان الصحيح للجولة الحالية
+        function playCurrentSound() {
+            if (!currentCorrectAnimal) {
+                // إذا لم توجد جولة (نادر)، نبدأ واحدة
+                startNewRound();
+            }
+            
+            stopGameAudio(); // إيقاف أي صوت سابق
+            
+            const audio = new Audio(currentCorrectAnimal.soundUrl);
+            gameAudio = audio;
+            
+            // تأثير على الزر
+            playSoundBtn.classList.add('playing-effect');
+            setTimeout(() => playSoundBtn.classList.remove('playing-effect'), 300);
+            
+            audio.play().catch(err => {
+                feedbackEl.innerHTML = '⚠️ اضغط زر الصوت مرة أخرى للتشغيل ⚠️';
+                console.warn("تنبيه: تعذر التشغيل التلقائي:", err);
+            });
+            
+            // رسالة توضيحية
+            if (canSelect) {
+                feedbackEl.innerHTML = '🔊 استمع جيداً ... من صاحب هذا الصوت؟';
+            } else {
+                feedbackEl.innerHTML = '🔊 استمع للصوت مرة أخرى، أو ابدأ جولة جديدة 🔄';
+            }
+        }
+
+        // إعادة ضبط اللعبة بالكامل (نقاط = 0 ، جولة جديدة)
+        function resetFullGame() {
+            score = 0;
+            updateScoreUI();
+            startNewRound();
+            feedbackEl.innerHTML = '🌟 لعبة جديدة! حظاً موفقاً 🌟';
+        }
+
+        // ---------- ربط الأحداث ----------
+
+        // زر "اسمع الصوت"
+        playSoundBtn.addEventListener('click', () => {
+            // إذا كانت الجولة منتهية (canSelect = false) نبدأ جولة جديدة تلقائياً عند الضغط
+            if (!canSelect) {
+                startNewRound();
+            }
+            playCurrentSound();
+        });
+
+        // زر "جولة جديدة" (يحافظ على النقاط)
+        newRoundBtn.addEventListener('click', () => {
+            startNewRound();
+            feedbackEl.innerHTML = '🔄 جولة جديدة! استمع للصوت وخمن 🎧';
+        });
+
+        // زر "لعبة جديدة" (يصفر النقاط ويبدأ من الصفر)
+        resetGameBtn.addEventListener('click', () => {
+            resetFullGame();
+        });
+
+        // ---------- بدء التشغيل الأولي ----------
+        function initGame() {
+            // اختيار جولة أولى عشوائية
+            const randomIndex = Math.floor(Math.random() * animals.length);
+            currentCorrectAnimal = animals[randomIndex];
+            currentOptions = generateOptions(currentCorrectAnimal);
+            renderOptions(currentOptions, currentCorrectAnimal);
+            canSelect = true;
+            updateScoreUI();
+            feedbackEl.innerHTML = '🎮 أهلاً بك! اضغط "اسمع الصوت" لبدء التحدي 🎮';
+        }
+
+        initGame();
+
+        // إضافة تحسين: عند النقر على خيار خاطئ لا نوقف الصوت، لكن نسمح بإعادة الاستماع
+        // (كل شيء يعمل كما هو مطلوب)
+        
+        console.log("🐮🐔 لعبة خمن الصوت جاهزة! استمتع مع أطفالك!");
+    })();
+</script>
+
+</body>
+</html>
