@@ -379,19 +379,67 @@
         "use strict";
 
         // ---------- مكتبة الحيوانات (نفس البيانات مع روابط الصور والأصوات) ----------
-        const animals = [
-            { nameAr: "البقرة",
+       const animals = [
+            {
+                nameAr: "البقرة",
                 imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjMpBFzeiH7TtvHbYdnKBLxtS6amdRXcdw0w&s?w=400&auto=format&fit=crop",
                 soundUrl: "https://mp4.shabakngy.com/m/m/2vaGSayG4es.mp3",
                 icon: "🐄"
-                },
-            { nameAr: "الخروف", imageUrl: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/V5JV3vWvQzA.mp3", icon: "🐑" },
-            { nameAr: "الدجاجة", imageUrl: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/NZ0zE1pB_og.mp3", icon: "🐔" },
-            { nameAr: "الحصان", imageUrl: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/G2x7HRCc3JU.mp3", icon: "🐎" },
-            { nameAr: "ارنب", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Oryctolagus_cuniculus_Tasmania_2.jpg/960px-Oryctolagus_cuniculus_Tasmania_2.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/ifqXhfTNvpg.mp3", icon: "🐇" },
-            { nameAr: "البطة", imageUrl: "https://png.pngtree.com/png-vector/20231115/ourmid/pngtree-female-duck-duck-brown-png-image_10588001.png?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/6gXfRJEYh20.mp3", icon: "🦆" },
-            { nameAr: "الحمار", imageUrl: "https://img.youm7.com/large/S7200830154145.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp4.shabakngy.com/m/m/RIYS3KWtbTs.mp3", icon: "🫏" },
-            { nameAr: "كلب", imageUrl: "https://www.purina-arabia.com/sites/default/files/2025-09/BREED%2520Hero%2520Mobile_0154_boxer%20%281%29.jpg?w=400&auto=format&fit=crop", soundUrl: "https://mp3s.shabakngy.com/m/new/G-g2cmDBiIU.mp3", icon: "🐕" }
+            },
+            {
+                nameAr: "الخروف",
+                imageUrl: "https://media.zid.store/thumbs/7d318a1a-b078-4c18-82ef-2b9ada64be2f/c90a9910-689d-45ab-b487-74eb4db39566-thumbnail-1000x1000-70.jpeg?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp4.shabakngy.com/m/m/V5JV3vWvQzA.mp3",
+                icon: "🐑"
+            },
+            {
+                nameAr: "الدجاجة",
+                imageUrl: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp4.shabakngy.com/m/m/NZ0zE1pB_og.mp3",
+                icon: "🐔"
+            },
+            {
+                nameAr: "الحصان",
+                imageUrl: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp3s.shabakngy.com/m/new/G2x7HRCc3JU.mp3",
+                icon: "🐎"
+            },
+            {
+                nameAr: "ارنب",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Oryctolagus_cuniculus_Tasmania_2.jpg/960px-Oryctolagus_cuniculus_Tasmania_2.jpg?w=400&auto=format&fit=crop",
+                soundUrl: "https://github.com/magmz3/noni/raw/refs/heads/Sound/rib.mp3",
+                icon: "🐇"
+            },
+            {
+                nameAr: "البطة",
+                imageUrl: "https://png.pngtree.com/png-vector/20231115/ourmid/pngtree-female-duck-duck-brown-png-image_10588001.png?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp3s.shabakngy.com/m/new/6gXfRJEYh20.mp3",
+                icon: "🦆"
+            },
+            {
+                nameAr: "الحمار",
+                imageUrl: "https://img.youm7.com/large/S7200830154145.jpg?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp4.shabakngy.com/m/m/RIYS3KWtbTs.mp3",
+                icon: "🫏"
+            },
+            {
+                nameAr: "كلب",
+                imageUrl: "https://www.purina-arabia.com/sites/default/files/2025-09/BREED%2520Hero%2520Mobile_0154_boxer%20%281%29.jpg?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp3s.shabakngy.com/m/new/G-g2cmDBiIU.mp3",
+                icon: "🐕"
+            },
+                 {
+                nameAr: "قطة",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg?w=900&auto=format&fit=crop",
+                soundUrl: "https://mp3s.shabakngy.com/m/new/R-du5vbqO9g.mp3",
+                icon: "😾"
+            },
+            {
+                nameAr: "جمل",
+                imageUrl: "https://png.pngtree.com/png-clipart/20240812/original/pngtree-camel-cut-out-on-white-background-png-image_15761578.png?w=400&auto=format&fit=crop",
+                soundUrl: "https://mp3s.shabakngy.com/m/new/Swga6XQZ6sA.mp3",
+                icon: "🐪"
+            }
         ];
 
         // ---------- عناصر DOM ----------
