@@ -1,497 +1,162 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>🐣 أصوات حيوانات المزرعة | للأطفال 🐮</title>
-    <!-- خطوط عربية مرحة ومناسبة للأطفال -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&family=El+Messiri:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome للأيقونات -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التعلم التفاعلية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- مكتبة المؤثرات الاحتفالية -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: linear-gradient(145deg, #fbf5e8 0%, #f9efd1 100%);
-            min-height: 100vh;
-            font-family: 'Baloo Bhaijaan 2', 'El Messiri', cursive, sans-serif;
-            padding: 20px 16px 40px;
-            color: #3b2b1f;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            scroll-behavior: smooth;
         }
-
-        .farm-container {
-            max-width: 1300px;
-            margin: 0 auto;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .farm-header {
-            text-align: center;
-            margin-bottom: 35px;
-            position: relative;
+        .glass-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
-
-        .farm-header h1 {
-            font-size: 3.2rem;
-            font-weight: 700;
-            color: #5e3e1c;
-            text-shadow: 4px 4px 0 #f3d59b;
-            letter-spacing: 2px;
-            word-break: break-word;
-            display: inline-block;
-            padding: 10px 35px;
-            background: rgba(255, 251, 235, 0.7);
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            box-shadow: 0 10px 0 #bfa27b, 0 8px 20px rgba(0,0,0,0.1);
-            border: 3px solid #fff3d1;
-            margin-bottom: 20px;
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
         }
-
-        .farm-header p {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #2d5e3c;
-            background: #e3f0da;
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 50px;
-            box-shadow: inset 0 2px 5px rgba(90, 60, 30, 0.08), 0 6px 0 #6f9e7c;
-            border: 2px solid #fef9e3;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
-
-        .farm-header i {
-            margin: 0 10px;
-            color: #b1622c;
-        }
-
-        .animal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 28px 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .animal-card {
-            background: #fffef7;
-            border-radius: 50px 50px 40px 40px;
-            padding: 20px 18px 22px;
-            box-shadow: 0 18px 0 #b2916e, 0 10px 20px rgba(0,0,0,0.15);
-            border: 3px solid #ffefc0;
-            transition: transform 0.15s ease, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            backdrop-filter: blur(2px);
-        }
-
-        .animal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 0 #9c7e5f, 0 15px 25px rgba(0,0,0,0.2);
-            background: #fffffc;
-        }
-
-        .image-wrapper {
-            width: 100%;
-            border-radius: 35px;
-            overflow: hidden;
-            border: 5px solid #e7cfaa;
-            box-shadow: inset 0 0 0 2px #fef7e9, 0 8px 0 #7c623e;
-            margin-bottom: 16px;
-            background: #d9c2a4;
-            aspect-ratio: 1/1;
-        }
-
-        .animal-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-
-        .animal-card:hover .animal-img {
-            transform: scale(1.02);
-        }
-
-        .animal-name {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #4a2e15;
-            margin: 8px 0 5px;
-            line-height: 1.3;
-            text-shadow: 2px 2px 0 #f3deae;
-            letter-spacing: 1px;
-        }
-
-        .sound-btn {
-            background: #ffc857;
-            border: none;
-            border-radius: 60px;
-            padding: 12px 22px;
-            margin: 10px 0 5px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #3a2a12;
-            box-shadow: 0 6px 0 #b47d2e, 0 3px 8px rgba(0,0,0,0.1);
-            border: 3px solid #ffe3a3;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.07s;
-            font-family: inherit;
-            width: fit-content;
-            min-width: 140px;
-        }
-
-        .sound-btn i {
-            font-size: 1.8rem;
-            color: #5a3e0b;
-        }
-
-        .sound-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 1px 0 #b47d2e, 0 3px 8px rgba(0,0,0,0.1);
-        }
-
-        .sound-btn:hover {
-            background: #ffda7c;
-        }
-
-        .animal-card.playing .sound-btn {
-            background: #f7b32b;
-            box-shadow: 0 2px 0 #9e691b;
-            transform: translateY(4px);
-        }
-
-        .farm-footer {
-            margin-top: 55px;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #5f4a2e;
-            background: rgba(255,245,215,0.7);
-            padding: 18px 20px;
-            border-radius: 40px;
-            backdrop-filter: blur(4px);
-            border: 2px dashed #b6956a;
-        }
-
-        .farm-footer i {
-            color: #b34e1a;
-            margin: 0 5px;
-        }
-
-        .credit-line {
-            direction: ltr;
-            display: inline-block;
-            background: #e9dbc4;
-            padding: 5px 15px;
-            border-radius: 30px;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        @media (max-width: 600px) {
-            .farm-header h1 {
-                font-size: 2.4rem;
-                padding: 8px 20px;
-            }
-            .farm-header p {
-                font-size: 1.4rem;
-            }
-            .animal-name {
-                font-size: 1.9rem;
-            }
-            .sound-btn {
-                font-size: 1.3rem;
-                padding: 10px 16px;
-                min-width: 120px;
-            }
-        }
-
-        .animal-card:active .animal-img {
-            transform: scale(0.98);
-        }
-
-        .hint-tap {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-top: 5px;
-            color: #6f4e2b;
+        #notification {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-<div class="farm-container">
-    <header class="farm-header">
-        <h1>
-            <i class="fas fa-tractor"></i> 
-            أصدقاء المزرعة 
-            <i class="fas fa-carrot"></i>
-        </h1>
-        <p>
-            <i class="fas fa-volume-up"></i>
-            اضغط على الصورة أو زر الصوت 
-            <i class="fas fa-hand-pointer"></i>
-        </p>
+    <!-- Notification Toast -->
+    <div id="notification" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 bg-white border-r-4 border-blue-500 shadow-xl rounded-lg p-4 flex items-center gap-3 pointer-events-none">
+        <span id="notif-icon" class="text-2xl"></span>
+        <span id="notif-message" class="font-bold text-gray-700"></span>
+    </div>
+
+    <!-- Header Section -->
+    <header class="py-10 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-blue-700 mb-4 drop-shadow-sm">
+                مغامرة التعلم الذكي 🚀
+            </h1>
+            <p class="text-lg md:text-xl text-blue-500 font-medium">استمتع، تعلم، واستكشف العالم من حولك!</p>
+        </div>
     </header>
 
-    <div class="animal-grid" id="animalGrid"></div>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <!-- Card 1: Animal Recognition -->
+            <div class="glass-card rounded-3xl p-8 border-t-4 border-green-500 shadow-lg flex flex-col items-center group">
+                <div class="w-24 h-24 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-green-200 transition-colors duration-300">
+                    <span class="text-6xl animate-bounce-slow">🦁</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">التعرف على الحيوانات</h2>
+                <p class="text-gray-600 text-center mb-8 leading-relaxed">
+                    رحلة سفاري مذهلة لاكتشاف أسرار الغابة وأغرب الكائنات الحية.
+                </p>
+                <button onclick="handleNavigation('التعرف على الحيوانات', '🦁', 'https://magmz3.github.io/noni/anm_sound.html')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-200 active:scale-95 transition-all">
+                    انطلق في الرحلة
+                </button>
+            </div>
 
-    <footer class="farm-footer">
-        <div>
-            <i class="fas fa-heart" style="color: #c44f4f;"></i> 
-            تعرّف على أصوات الحيوانات الحقيقية 
-            <i class="fas fa-heart" style="color: #c44f4f;"></i>
+            <!-- Card 2: Animal Sounds Game -->
+            <div class="glass-card rounded-3xl p-8 border-t-4 border-blue-500 shadow-lg flex flex-col items-center group">
+                <div class="w-24 h-24 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-200 transition-colors duration-300">
+                    <span class="text-6xl animate-pulse">🔊</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">لعبة أصوات الحيوانات</h2>
+                <p class="text-gray-600 text-center mb-8 leading-relaxed">
+                    أنصت جيداً! هل تستطيع تمييز صوت الفيل من الأسد؟ اختبر أذنيك الآن.
+                </p>
+                <button onclick="handleNavigation('لعبة الأصوات', '🎶', 'https://magmz3.github.io/noni/noni_anm_game.html')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 active:scale-95 transition-all">
+                    ابدأ اللعب
+                </button>
+            </div>
+
+            <!-- Card 3: Fruit Recognition -->
+            <div class="glass-card rounded-3xl p-8 border-t-4 border-red-500 shadow-lg flex flex-col items-center group">
+                <div class="w-24 h-24 bg-red-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-200 transition-colors duration-300">
+                    <span class="text-6xl animate-bounce-slow">🍓</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">التعرف على الفواكه</h2>
+                <p class="text-gray-600 text-center mb-8 leading-relaxed">
+                    عالم من الألوان والطعم اللذيذ. تعرف على الفاكهة وفوائدها الصحية.
+                </p>
+                <button onclick="handleNavigation('التعرف على الفواكه', '🍎', 'https://magmz3.github.io/noni/part2.html')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-200 active:scale-95 transition-all">
+                    اكتشف الفواكه
+                </button>
+            </div>
+
         </div>
-        <div class="credit-line">
-            <i class="fas fa-camera"></i> صور واقعية من Unsplash · 
-            <i class="fas fa-music"></i> أصوات حقيقية 
+
+        <!-- Extra Section: Progress/Info -->
+        <div class="mt-20 p-8 bg-white/50 rounded-3xl border border-white/20 text-center max-w-2xl mx-auto">
+            <h3 class="text-xl font-bold text-blue-600 mb-2">إحصائياتك اليومية</h3>
+            <div class="flex justify-around mt-6">
+                <div>
+                    <p class="text-3xl font-black text-gray-800">0</p>
+                    <p class="text-sm text-gray-500">نقاط المحاولة</p>
+                </div>
+                <div class="border-x border-gray-200 px-10">
+                    <p class="text-3xl font-black text-gray-800">0</p>
+                    <p class="text-sm text-gray-500">مراحل مكتملة</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-black text-gray-800">1</p>
+                    <p class="text-sm text-gray-500">المستوى</p>
+                </div>
+            </div>
         </div>
-        <div style="margin-top: 12px; font-size: 1.1rem;">
-            🌟 استمتع يا بطل! 🌟
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 opacity-60 hover:opacity-100 transition-opacity">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-600 font-semibold">&copy; 2024 منصة التعليم الذكي | صنع بشغف ❤️</p>
         </div>
     </footer>
-</div>
 
-<script>
-    (function() {
-        "use strict";
+    <script>
+        function handleNavigation(title, icon, url) {
+            // Show Notification
+            const notif = document.getElementById('notification');
+            const notifIcon = document.getElementById('notif-icon');
+            const notifMsg = document.getElementById('notif-message');
 
-        // مكتبة الحيوانات بالصور الواقعية والأصوات (تم تعديل الروابط الصوتية حسب طلبك)
-        const animals = [
-            {
-                nameAr: "البقرة",
-                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjMpBFzeiH7TtvHbYdnKBLxtS6amdRXcdw0w&s?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp4.shabakngy.com/m/m/2vaGSayG4es.mp3",
-                icon: "🐄"
-            },
-            {
-                nameAr: "الخروف",
-                imageUrl: "https://media.zid.store/thumbs/7d318a1a-b078-4c18-82ef-2b9ada64be2f/c90a9910-689d-45ab-b487-74eb4db39566-thumbnail-1000x1000-70.jpeg?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp4.shabakngy.com/m/m/V5JV3vWvQzA.mp3",
-                icon: "🐑"
-            },
-            {
-                nameAr: "الدجاجة",
-                imageUrl: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp4.shabakngy.com/m/m/NZ0zE1pB_og.mp3",
-                icon: "🐔"
-            },
-            {
-                nameAr: "الحصان",
-                imageUrl: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp3s.shabakngy.com/m/new/G2x7HRCc3JU.mp3",
-                icon: "🐎"
-            },
-            {
-                nameAr: "ارنب",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Oryctolagus_cuniculus_Tasmania_2.jpg/960px-Oryctolagus_cuniculus_Tasmania_2.jpg?w=400&auto=format&fit=crop",
-                soundUrl: "https://github.com/magmz3/noni/raw/refs/heads/Sound/rib.mp3",
-                icon: "🐇"
-            },
-            {
-                nameAr: "البطة",
-                imageUrl: "https://png.pngtree.com/png-vector/20231115/ourmid/pngtree-female-duck-duck-brown-png-image_10588001.png?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp3s.shabakngy.com/m/new/6gXfRJEYh20.mp3",
-                icon: "🦆"
-            },
-            {
-                nameAr: "الحمار",
-                imageUrl: "https://img.youm7.com/large/S7200830154145.jpg?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp4.shabakngy.com/m/m/RIYS3KWtbTs.mp3",
-                icon: "🫏"
-            },
-            {
-                nameAr: "كلب",
-                imageUrl: "https://www.purina-arabia.com/sites/default/files/2025-09/BREED%2520Hero%2520Mobile_0154_boxer%20%281%29.jpg?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp3s.shabakngy.com/m/new/G-g2cmDBiIU.mp3",
-                icon: "🐕"
-            },
-                 {
-                nameAr: "قطة",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg?w=900&auto=format&fit=crop",
-                soundUrl: "https://mp3s.shabakngy.com/m/new/R-du5vbqO9g.mp3",
-                icon: "😾"
-            },
-            {
-                nameAr: "جمل",
-                imageUrl: "https://png.pngtree.com/png-clipart/20240812/original/pngtree-camel-cut-out-on-white-background-png-image_15761578.png?w=400&auto=format&fit=crop",
-                soundUrl: "https://mp3s.shabakngy.com/m/new/Swga6XQZ6sA.mp3",
-                icon: "🐪"
-            }
-        ];
-
-        const gridContainer = document.getElementById('animalGrid');
-        if (!gridContainer) return;
-
-        // المتغيرات لإدارة الصوت الحالي ومنع التداخل
-        let currentAudio = null;
-        let currentCard = null;   // لتتبع البطاقة النشطة
-
-        // إيقاف أي صوت سابق وإزالة التأثيرات
-        function stopCurrentAudio() {
-            if (currentAudio) {
-                try {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                } catch (e) {
-                    // تجاهل الأخطاء
-                }
-                currentAudio = null;
-            }
-            if (currentCard) {
-                currentCard.classList.remove('playing');
-                currentCard = null;
-            }
-        }
-
-        // إزالة كلاس playing من جميع البطاقات (للتأكيد)
-        function removePlayingClassFromAll() {
-            document.querySelectorAll('.animal-card').forEach(card => {
-                card.classList.remove('playing');
-            });
-        }
-
-        // دالة إنشاء بطاقة حيوان
-        function createAnimalCard(animal) {
-            const card = document.createElement('div');
-            card.className = 'animal-card';
+            notifIcon.textContent = icon;
+            notifMsg.textContent = `جاري الانتقال إلى ${title}...`;
             
-            // غلاف الصورة
-            const imgWrapper = document.createElement('div');
-            imgWrapper.className = 'image-wrapper';
-            
-            const img = document.createElement('img');
-            img.className = 'animal-img';
-            img.src = animal.imageUrl;
-            img.alt = `صورة واقعية لـ ${animal.nameAr}`;
-            img.loading = 'lazy';
-            img.onerror = function() {
-                this.src = 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=400&auto=format&fit=crop';
-                this.alt = 'صورة لمزرعة جميلة';
-            };
-            
-            imgWrapper.appendChild(img);
-            
-            // اسم الحيوان
-            const nameEl = document.createElement('div');
-            nameEl.className = 'animal-name';
-            nameEl.innerHTML = `${animal.icon || ''} ${animal.nameAr}`;
-            
-            // زر الصوت
-            const soundBtn = document.createElement('button');
-            soundBtn.className = 'sound-btn';
-            soundBtn.innerHTML = `<i class="fas fa-play"></i> <i class="fas fa-volume-up"></i> استمع`;
-            soundBtn.setAttribute('aria-label', `تشغيل صوت ${animal.nameAr}`);
-            
-            // ----------------------------------------------
-            // دالة تشغيل الصوت (محسّنة لمنع التداخل والتكرار)
-            // ----------------------------------------------
-            const playSound = (e) => {
-                // منع انتشار الحدث لتجنب استدعاء المستمعات المتعددة
-                if (e) {
-                    e.stopPropagation();
-                }
+            notif.classList.remove('-translate-y-20', 'opacity-0');
+            notif.classList.add('translate-y-0', 'opacity-100');
 
-                // 1. إيقاف أي صوت سابق تماماً
-                stopCurrentAudio();
-                removePlayingClassFromAll();
-
-                // 2. إنشاء كائن صوتي جديد
-                const audio = new Audio(animal.soundUrl);
-                
-                // 3. ضبط المتغيرات العامة
-                currentAudio = audio;
-                currentCard = card;
-                
-                // 4. إظهار التأثير على البطاقة الحالية
-                card.classList.add('playing');
-
-                // 5. معالجة نهاية الصوت أو خطأه
-                audio.addEventListener('ended', () => {
-                    card.classList.remove('playing');
-                    if (currentAudio === audio) {
-                        currentAudio = null;
-                        currentCard = null;
-                    }
+            // Trigger Confetti Effect safely
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#3b82f6', '#22c55e', '#ef4444']
                 });
-                
-                audio.addEventListener('error', () => {
-                    card.classList.remove('playing');
-                    currentAudio = null;
-                    currentCard = null;
-                    console.warn("تعذر تحميل الصوت، تحقق من الرابط");
-                });
+            }
 
-                // 6. تشغيل الصوت مع معالجة الوعد (لأمان المتصفح)
-                audio.play().catch(err => {
-                    console.warn("التشغيل تطلب تفاعل إضافي:", err);
-                    card.classList.remove('playing');
-                    currentAudio = null;
-                    currentCard = null;
-                });
-            };
-            
-            // ----------------------------------------------
-            // ربط الأحداث بشكل يمنع التشغيل المزدوج
-            // ----------------------------------------------
-            
-            // عند النقر على الصورة
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();  // مهم لمنع تشغيل مستمع البطاقة
-                playSound(e);
-            });
-            
-            // عند النقر على الزر
-            soundBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                playSound(e);
-            });
-            
-            // عند النقر على أي مكان آخر في البطاقة (باستثناء الصورة والزر)
-            card.addEventListener('click', (e) => {
-                // إذا كان الهدف هو الزر أو الصورة، لن نكرر لأن stopPropagation منع الوصول
-                // لكن للتأكد (إذا كان هناك أي تسرب) نتحقق:
-                const target = e.target;
-                if (!target.closest('.sound-btn') && !target.closest('.animal-img')) {
-                    playSound(e);
-                }
-            });
-            
-            // تجميع البطاقة
-            card.appendChild(imgWrapper);
-            card.appendChild(nameEl);
-            card.appendChild(soundBtn);
-            
-            const hint = document.createElement('div');
-            hint.className = 'hint-tap';
-            hint.innerHTML = '<i class="fas fa-fingerprint"></i> المس الصورة';
-            card.appendChild(hint);
-            
-            return card;
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1500);
         }
-
-        // بناء الشبكة
-        animals.forEach(animal => {
-            const card = createAnimalCard(animal);
-            gridContainer.appendChild(card);
-        });
-
-        console.log("✅ تم الإصلاح: صوت واحد فقط في كل مرة، ولا تكرار عند الضغط!");
-    })();
-</script>
+    </script>
 
 </body>
 </html>
