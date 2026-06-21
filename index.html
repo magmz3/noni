@@ -198,6 +198,13 @@
         </div>
     </footer>
 
+  <!-- تعطيل زر اليمين  !-->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+  });
+</script>
+    
     <script>
         function handleNavigation(title, icon, url) {
             const notifEl = document.getElementById('notification');
