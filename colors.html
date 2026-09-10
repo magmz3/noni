@@ -163,37 +163,10 @@
     let questionNum = 0;
     let bestScore = parseInt(localStorage.getItem('colorsBest') || '0');
     let locked = false;
-    let audioCtx = null;
 
     document.getElementById('bestDisplay').textContent = bestScore;
 
-    // ===== الصوت =====
-    function getCtx() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        return audioCtx;
-    }
-
-    function playChime(freq = 523.25) {
-        try {
-            const ctx = getCtx();
-            const now = ctx.currentTime;
-            [1, 1.25, 1.5].forEach((mult, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq * mult, now + i * 0.08);
-                gain.gain.setValueAtTime(0, now + i * 0.08);
-                gain.gain.linearRampToValueAtTime(0.15, now + i * 0.08 + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.6);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now + i * 0.08);
-                osc.stop(now + i * 0.08 + 0.7);
-            });
-        } catch(e) {}
-    }
-
+    // ===== النطق العربي فقط (بدون نغمات) =====
     function speak(text, rate = 0.85) {
         if (!('speechSynthesis' in window)) return;
         speechSynthesis.cancel();
@@ -241,8 +214,7 @@
         const c = colors.find(x => x.id === id);
         if (!c) return;
         el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-        playChime(440 + Math.random() * 250);
-        speak(c.name);
+        speak(c.name);  // ✅ النطق فقط، بدون نغمة
         showToast(`اللون: ${c.name}`, '🎨');
     }
 
@@ -292,8 +264,7 @@
         const btn = document.getElementById('playSoundBtn');
         btn.classList.add('ring-anim');
         setTimeout(() => btn.classList.remove('ring-anim'), 1000);
-        playChime(600);
-        speak(currentColor.name, 0.7);
+        speak(currentColor.name, 0.7);  // ✅ النطق فقط، بدون نغمة
     }
 
     function answerGame(id, el) {
@@ -307,7 +278,7 @@
             el.classList.add('ring-4','ring-green-400');
             fb.textContent = '🎉 أحسنت! إجابة صحيحة';
             fb.className = 'text-2xl font-black mt-6 min-h-[2.5rem] text-green-600';
-            playChime(880);
+            // ✅ لا توجد نغمة، فقط Confetti
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 90, spread: 70, origin: { y: 0.7 }, colors: [currentColor.hex, '#22c55e', '#3b82f6'] });
             }
@@ -337,7 +308,6 @@
 
     // ===== التهيئة =====
     buildLearnGrid();
-    document.addEventListener('click', () => getCtx(), { once: true });
     document.addEventListener('contextmenu', e => e.preventDefault());
 </script>
 </body>
