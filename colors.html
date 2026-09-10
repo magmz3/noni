@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعلم الألوان | مغامرة المعرفة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        body { background: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%); }
+        .glass {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 1.5rem;
+        }
+        .color-card {
+            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1), box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .color-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 20px 35px -10px rgba(0,0,0,0.25); }
+        .color-card:active { transform: scale(0.96); }
+        @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+        .pop { animation: pop 0.5s ease; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .float { animation: float 3s ease-in-out infinite; }
+        @keyframes ringPulse { 0%{box-shadow:0 0 0 0 rgba(59,130,246,0.6)} 100%{box-shadow:0 0 0 35px rgba(59,130,246,0)} }
+        .ring-anim { animation: ringPulse 1s ease-out; }
+        .mode-btn.active { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; box-shadow: 0 10px 25px -5px rgba(59,130,246,0.5); }
+        .btn-pulse:active { transform: scale(0.95); }
+        .color-swatch { box-shadow: inset 0 -6px 15px rgba(0,0,0,0.12), 0 8px 20px -5px rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e0e7ff; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Toast -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] transform -translate-y-24 opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl border-r-[6px] border-pink-500 p-4 flex items-center gap-3 min-w-[260px]">
+            <span id="toast-icon" class="text-3xl">🎨</span>
+            <span id="toast-msg" class="font-bold text-gray-800 text-lg">مرحباً!</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative pt-8 pb-4 overflow-hidden">
+        <div class="container mx-auto px-5 relative z-10">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+                <a href="index.html" class="glass px-5 py-2.5 flex items-center gap-2 font-bold text-gray-700 hover:bg-white/95 transition">
+                    <span>🏠</span>
+                    <span>العودة للرئيسية</span>
+                </a>
+                <div class="glass px-5 py-2.5 flex items-center gap-2 font-bold text-pink-700">
+                    <span>🎨</span>
+                    <span>تعلم الألوان</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-4 drop-shadow-sm">
+                    عالم الألوان 🌈
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto">
+                    استمع، تعلم، والعب مع الألوان الجميلة!
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mode toggle -->
+    <div class="container mx-auto px-5 mt-6">
+        <div class="flex justify-center gap-3">
+            <button id="modeLearn" onclick="setMode('learn')" class="mode-btn active glass px-6 py-3 font-bold text-gray-700 transition flex items-center gap-2">
+                <span>📚</span> وضع التعلم
+            </button>
+            <button id="modeGame" onclick="setMode('game')" class="mode-btn glass px-6 py-3 font-bold text-gray-700 transition flex items-center gap-2">
+                <span>🎮</span> وضع اللعبة
+            </button>
+        </div>
+    </div>
+
+    <main class="flex-grow container mx-auto px-5 py-8">
+
+        <!-- Learn Mode -->
+        <section id="learnSection">
+            <div id="colorsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"></div>
+        </section>
+
+        <!-- Game Mode -->
+        <section id="gameSection" class="hidden">
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="glass p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-right">
+                            <p class="text-sm text-gray-500 font-semibold">النقاط</p>
+                            <p id="scoreDisplay" class="text-3xl font-black text-blue-600">0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500 font-semibold">السؤال</p>
+                            <p id="questionDisplay" class="text-3xl font-black text-gray-700">0</p>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-sm text-gray-500 font-semibold">أفضل نتيجة</p>
+                            <p id="bestDisplay" class="text-3xl font-black text-amber-500">0</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width:0%"></div>
+                    </div>
+                </div>
+
+                <button id="playSoundBtn" onclick="playCurrentColor()" class="float mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-full w-32 h-32 flex flex-col items-center justify-center shadow-2xl shadow-blue-300 transition-all duration-300 mb-6 btn-pulse">
+                    <span class="text-5xl">🔊</span>
+                    <span class="text-sm font-bold mt-1">اسمع اللون</span>
+                </button>
+
+                <p class="text-xl font-bold text-gray-700 mb-6">ما هو اللون الذي سمعته؟</p>
+
+                <div id="gameOptions" class="grid grid-cols-2 gap-4"></div>
+
+                <p id="gameFeedback" class="text-2xl font-black mt-6 min-h-[2.5rem]"></p>
+
+                <button onclick="setMode('game')" class="mt-8 glass px-6 py-3 font-bold text-gray-700 hover:bg-white/95 transition">
+                    🔄 لعبة جديدة
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-16 py-6 border-t border-white/20">
+        <div class="container mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-white/30 backdrop-blur-sm px-6 py-2 rounded-full">
+                <span class="text-gray-700 font-semibold">&copy; 2026 منصة التعليم الذكي</span>
+                <span class="text-red-500">❤️</span>
+                <span class="text-gray-700">| صنع بشغف</span>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    // ===== البيانات =====
+    const colors = [
+        { id:'red',    name:'أحمر',    hex:'#ef4444', light:false },
+        { id:'blue',   name:'أزرق',    hex:'#3b82f6', light:false },
+        { id:'green',  name:'أخضر',    hex:'#22c55e', light:false },
+        { id:'yellow', name:'أصفر',    hex:'#facc15', light:true  },
+        { id:'orange', name:'برتقالي', hex:'#f97316', light:false },
+        { id:'purple', name:'بنفسجي',  hex:'#a855f7', light:false },
+        { id:'pink',   name:'وردي',    hex:'#ec4899', light:false },
+        { id:'brown',  name:'بني',     hex:'#92400e', light:false },
+        { id:'black',  name:'أسود',    hex:'#1f2937', light:false },
+        { id:'white',  name:'أبيض',    hex:'#ffffff', light:true  },
+        { id:'gray',   name:'رمادي',   hex:'#6b7280', light:false },
+        { id:'cyan',   name:'سماوي',   hex:'#06b6d4', light:false },
+    ];
+
+    let mode = 'learn';
+    let currentColor = null;
+    let score = 0;
+    let questionNum = 0;
+    let bestScore = parseInt(localStorage.getItem('colorsBest') || '0');
+    let locked = false;
+    let audioCtx = null;
+
+    document.getElementById('bestDisplay').textContent = bestScore;
+
+    // ===== الصوت =====
+    function getCtx() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
+    }
+
+    function playChime(freq = 523.25) {
+        try {
+            const ctx = getCtx();
+            const now = ctx.currentTime;
+            [1, 1.25, 1.5].forEach((mult, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq * mult, now + i * 0.08);
+                gain.gain.setValueAtTime(0, now + i * 0.08);
+                gain.gain.linearRampToValueAtTime(0.15, now + i * 0.08 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.6);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now + i * 0.08);
+                osc.stop(now + i * 0.08 + 0.7);
+            });
+        } catch(e) {}
+    }
+
+    function speak(text, rate = 0.85) {
+        if (!('speechSynthesis' in window)) return;
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ar-SA';
+        u.rate = rate;
+        u.pitch = 1.05;
+        const voices = speechSynthesis.getVoices();
+        const arVoice = voices.find(v => v.lang.startsWith('ar'));
+        if (arVoice) u.voice = arVoice;
+        speechSynthesis.speak(u);
+    }
+
+    if ('speechSynthesis' in window) {
+        speechSynthesis.getVoices();
+        speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // ===== Toast =====
+    function showToast(msg, icon = '🎨') {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-icon').textContent = icon;
+        document.getElementById('toast-msg').textContent = msg;
+        t.classList.remove('-translate-y-24','opacity-0');
+        t.classList.add('translate-y-0','opacity-100');
+        clearTimeout(t._t);
+        t._t = setTimeout(() => {
+            t.classList.add('-translate-y-24','opacity-0');
+            t.classList.remove('translate-y-0','opacity-100');
+        }, 1800);
+    }
+
+    // ===== بناء شبكة التعلم =====
+    function buildLearnGrid() {
+        document.getElementById('colorsGrid').innerHTML = colors.map((c, i) => `
+            <div class="color-card glass p-5 flex flex-col items-center" onclick="clickColor('${c.id}', this)" style="animation-delay:${i*0.05}s">
+                <div class="color-swatch w-24 h-24 rounded-full mb-4 ${c.light ? 'border-2 border-gray-300' : ''}" style="background:${c.hex}"></div>
+                <p class="text-xl font-black text-gray-800">${c.name}</p>
+                <p class="text-xs text-gray-400 font-semibold mt-1" dir="ltr">${c.hex}</p>
+            </div>
+        `).join('');
+    }
+
+    function clickColor(id, el) {
+        const c = colors.find(x => x.id === id);
+        if (!c) return;
+        el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+        playChime(440 + Math.random() * 250);
+        speak(c.name);
+        showToast(`اللون: ${c.name}`, '🎨');
+    }
+
+    // ===== تبديل الوضع =====
+    function setMode(m) {
+        mode = m;
+        document.getElementById('modeLearn').classList.toggle('active', m === 'learn');
+        document.getElementById('modeGame').classList.toggle('active', m === 'game');
+        document.getElementById('learnSection').classList.toggle('hidden', m !== 'learn');
+        document.getElementById('gameSection').classList.toggle('hidden', m !== 'game');
+        if (m === 'game') {
+            score = 0; questionNum = 0;
+            document.getElementById('scoreDisplay').textContent = '0';
+            document.getElementById('questionDisplay').textContent = '0';
+            document.getElementById('gameFeedback').textContent = '';
+            updateProgress();
+            newQuestion();
+        }
+    }
+
+    // ===== منطق اللعبة =====
+    function newQuestion() {
+        locked = false;
+        document.getElementById('gameFeedback').textContent = '';
+        currentColor = colors[Math.floor(Math.random() * colors.length)];
+
+        let opts = [currentColor];
+        const others = colors.filter(c => c.id !== currentColor.id).sort(() => Math.random() - 0.5);
+        opts = opts.concat(others.slice(0, 3)).sort(() => Math.random() - 0.5);
+
+        document.getElementById('gameOptions').innerHTML = opts.map(c => `
+            <button onclick="answerGame('${c.id}', this)" data-id="${c.id}"
+                class="glass p-4 flex flex-col items-center transition hover:scale-105 active:scale-95">
+                <div class="w-16 h-16 rounded-full mb-2 ${c.light ? 'border-2 border-gray-300' : ''}" style="background:${c.hex}"></div>
+                <span class="font-black text-gray-800">${c.name}</span>
+            </button>
+        `).join('');
+
+        questionNum++;
+        document.getElementById('questionDisplay').textContent = questionNum;
+        updateProgress();
+        setTimeout(playCurrentColor, 500);
+    }
+
+    function playCurrentColor() {
+        if (!currentColor || locked) return;
+        const btn = document.getElementById('playSoundBtn');
+        btn.classList.add('ring-anim');
+        setTimeout(() => btn.classList.remove('ring-anim'), 1000);
+        playChime(600);
+        speak(currentColor.name, 0.7);
+    }
+
+    function answerGame(id, el) {
+        if (locked) return;
+        locked = true;
+        const isCorrect = id === currentColor.id;
+        const fb = document.getElementById('gameFeedback');
+
+        if (isCorrect) {
+            score++;
+            el.classList.add('ring-4','ring-green-400');
+            fb.textContent = '🎉 أحسنت! إجابة صحيحة';
+            fb.className = 'text-2xl font-black mt-6 min-h-[2.5rem] text-green-600';
+            playChime(880);
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 90, spread: 70, origin: { y: 0.7 }, colors: [currentColor.hex, '#22c55e', '#3b82f6'] });
+            }
+            showToast('إجابة صحيحة! ⭐', '🎉');
+        } else {
+            el.classList.add('ring-4','ring-red-400');
+            fb.textContent = `😅 الصحيح هو: ${currentColor.name}`;
+            fb.className = 'text-2xl font-black mt-6 min-h-[2.5rem] text-red-500';
+            document.querySelectorAll('#gameOptions button').forEach(b => {
+                if (b.dataset.id === currentColor.id) b.classList.add('ring-4','ring-green-400');
+            });
+        }
+        document.getElementById('scoreDisplay').textContent = score;
+        if (score > bestScore) {
+            bestScore = score;
+            localStorage.setItem('colorsBest', String(bestScore));
+            document.getElementById('bestDisplay').textContent = bestScore;
+        }
+        updateProgress();
+        setTimeout(() => { if (mode === 'game') newQuestion(); }, 2200);
+    }
+
+    function updateProgress() {
+        const pct = Math.min(100, (score / Math.max(questionNum, 1)) * 100);
+        document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    // ===== التهيئة =====
+    buildLearnGrid();
+    document.addEventListener('click', () => getCtx(), { once: true });
+    document.addEventListener('contextmenu', e => e.preventDefault());
+</script>
+</body>
+</html>
